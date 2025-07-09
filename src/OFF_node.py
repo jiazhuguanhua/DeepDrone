@@ -15,15 +15,15 @@ def state_cb(msg):
 if __name__ == "__main__":
     rospy.init_node("offb_node_py")
 
-    state_sub = rospy.Subscriber("mavros/state", State, callback = state_cb)
+    state_sub = rospy.Subscriber("iris_0/mavros/state", State, callback = state_cb)
 
-    local_pos_pub = rospy.Publisher("mavros/setpoint_position/local", PoseStamped, queue_size=10)
+    local_pos_pub = rospy.Publisher("iris_0/mavros/setpoint_position/local", PoseStamped, queue_size=10)
 
-    rospy.wait_for_service("/mavros/cmd/arming")
-    arming_client = rospy.ServiceProxy("mavros/cmd/arming", CommandBool)
+    rospy.wait_for_service("iris_0/mavros/cmd/arming")
+    arming_client = rospy.ServiceProxy("iris_0/mavros/cmd/arming", CommandBool)
 
-    rospy.wait_for_service("/mavros/set_mode")
-    set_mode_client = rospy.ServiceProxy("mavros/set_mode", SetMode)
+    rospy.wait_for_service("iris_0/mavros/set_mode")
+    set_mode_client = rospy.ServiceProxy("iris_0/mavros/set_mode", SetMode)
 
 
     # Setpoint publishing MUST be faster than 2Hz
@@ -35,8 +35,8 @@ if __name__ == "__main__":
 
     pose = PoseStamped()
 
-    pose.pose.position.x = 0
-    pose.pose.position.y = 0
+    pose.pose.position.x = 1
+    pose.pose.position.y = 1
     pose.pose.position.z = 2
 
     # Send a few setpoints before starting
