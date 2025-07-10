@@ -37,7 +37,7 @@ if __name__ == "__main__":
 
     pose.pose.position.x = 0
     pose.pose.position.y = 0
-    pose.pose.position.z = 2
+    pose.pose.position.z = 3
 
     # Send a few setpoints before starting
     for i in range(100):
