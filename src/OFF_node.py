@@ -35,8 +35,8 @@ if __name__ == "__main__":
 
     pose = PoseStamped()
 
-    pose.pose.position.x = 1
-    pose.pose.position.y = 1
+    pose.pose.position.x = 0
+    pose.pose.position.y = 0
     pose.pose.position.z = 2
 
     # Send a few setpoints before starting
