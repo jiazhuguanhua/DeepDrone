@@ -36,8 +36,8 @@ if __name__ == "__main__":
     pose = PoseStamped()
 
     pose.pose.position.x = 0
-    pose.pose.position.y = 0
-    pose.pose.position.z = 3
+    pose.pose.position.y = 0.75
+    pose.pose.position.z = 1.4
 
     # Send a few setpoints before starting
     for i in range(100):

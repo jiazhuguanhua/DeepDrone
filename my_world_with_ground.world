@@ -39,7 +39,7 @@
       <elevation>0</elevation>
       <heading_deg>0</heading_deg>
     </spherical_coordinates>
-    <model name='Model1_1'>
+    <model name='Model1'>
       <pose>2.20616 -0.436735 1 1.5708 -0 0</pose>
       <link name='Link1'>
         <collision name='Collision1'>
@@ -224,15 +224,15 @@
       <static>1</static>
     </model>
     <state world_name='default'>
-      <sim_time>859 465000000</sim_time>
-      <real_time>865 707914351</real_time>
-      <wall_time>1752116986 825380352</wall_time>
-      <iterations>859465</iterations>
+      <sim_time>1027 349000000</sim_time>
+      <real_time>169 34940563</real_time>
+      <wall_time>1752130166 266586171</wall_time>
+      <iterations>167884</iterations>
       <model name='Model0'>
-        <pose>0.001138 0 -0.05 1.571 1.55105 0.000203</pose>
+        <pose>0.001138 0 -0.021 1.57 1.57 -0.000102</pose>
         <scale>1 1 1</scale>
         <link name='Link1'>
-          <pose>0.001138 0 0 1.571 1.55105 0.000203</pose>
+          <pose>0.001138 0 -0.021 1.57 1.57 -0.000102</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
@@ -293,6 +293,16 @@
         <scale>1 1 1</scale>
         <link name='Link1'>
           <pose>0.75 1.75 1.4 0 -0 0</pose>
+          <velocity>0 0 0 0 -0 0</velocity>
+          <acceleration>0 0 0 0 -0 0</acceleration>
+          <wrench>0 0 0 0 -0 0</wrench>
+        </link>
+      </model>
+      <model name='ground_plane'>
+        <pose>-0.174864 -0.783315 0 0 -0 0</pose>
+        <scale>1 1 1</scale>
+        <link name='link'>
+          <pose>-0.174864 -0.783315 0 0 -0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
@@ -400,7 +410,7 @@
         <collision name='Collision1'>
           <geometry>
             <box>
-              <size>0.3 0 0.3</size>
+              <size>0.3 0.05 0.3</size>
             </box>
           </geometry>
           <pose>0 0 0 0 -0 0</pose>
@@ -442,10 +452,58 @@
     </model>
     <gui fullscreen='0'>
       <camera name='user_camera'>
-        <pose>1.49148 -0.972495 3.24922 0 1.04098 2.83869</pose>
+        <pose>-0.057323 -0.490679 0.237777 0 0.10498 1.26669</pose>
         <view_controller>orbit</view_controller>
         <projection_type>perspective</projection_type>
       </camera>
     </gui>
+    <model name='ground_plane'>
+      <static>1</static>
+      <link name='link'>
+        <collision name='collision'>
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>100 100</size>
+            </plane>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>100</mu>
+                <mu2>50</mu2>
+              </ode>
+              <torsional>
+                <ode/>
+              </torsional>
+            </friction>
+            <contact>
+              <ode/>
+            </contact>
+            <bounce/>
+          </surface>
+          <max_contacts>10</max_contacts>
+        </collision>
+        <visual name='visual'>
+          <cast_shadows>0</cast_shadows>
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>100 100</size>
+            </plane>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Grey</name>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <pose>-0.174864 -0.783315 0 0 -0 0</pose>
+    </model>
   </world>
 </sdf>
