@@ -1,0 +1,41 @@
+<launch>
+  <!-- 前缀，调试用 -->
+  <arg name="launch_prefix" default="" />
+
+  <!-- 统一命名空间：d455-->
+  <group ns="d455">
+
+    <!-- 参数 -->
+    <rosparam command="load" file="$(find apriltag_ros)/config/settings.yaml"/>
+    <rosparam command="load" file="$(find apriltag_ros)/config/d455_tags.yaml"/>
+
+    <!-- AprilTag 检测节点 -->
+    <node pkg="apriltag_ros"
+          type="apriltag_ros_continuous_node"
+          name="apriltag_continuous_node"
+          clear_params="true"
+          output="screen"
+          launch-prefix="$(arg launch_prefix)">
+
+      <!-- 话题重映射：现在都在 /d455 下 -->
+      <remap from="image_rect"  to="/camera/color/image_raw"/>
+      <remap from="camera_info" to="/camera/color/camera_info"/>
+      <remap from="tag_detections"        to="tag_detections"/>
+      <remap from="tag_detections_image"  to="tag_detections_image"/>
+
+      <!-- 坐标系 -->
+      <param name="camera_frame" value="d455_front_link"/>
+      <param name="publish_tag_detections_image" value="true"/>
+    </node>
+
+    <!-- 机体 → D455 前相机的静态 TF -->
+    <node name="base_link_to_d455_link"
+          pkg="tf"
+          type="static_transform_publisher"
+          args="0.15 0 0.05   <!-- x 前 15 cm, y 0, z 上 5 cm -->
+                0 0 0        <!-- rpy 无旋转，朝正前方 -->
+                base_link
+                d455_link
+                100"/>       <!-- 100 Hz -->
+  </group>
+</launch>

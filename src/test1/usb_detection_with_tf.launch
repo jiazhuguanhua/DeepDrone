@@ -1,0 +1,58 @@
+<launch>
+  <!-- 命名空间：usb_cam -->
+  <group ns="usb_cam">
+
+    <!-- USB 相机节点 -->
+    <node name="usb_cam_node"
+          pkg="usb_cam"
+          type="usb_cam_node"
+          output="screen">
+      <param name="video_device"        value="/dev/video0"/>
+      <param name="image_width"         value="640"/>
+      <param name="image_height"        value="480"/>
+      <param name="pixel_format"        value="yuyv"/>
+      <param name="camera_frame_id"     value="usb_cam_link"/>
+      <param name="camera_name"         value="usb_cam"/>
+      <param name="camera_info_url"
+             value="file://$(find apriltag_ros)/config/ost.yaml"/>
+    </node>
+
+    <!-- 图像处理 -->
+    <node name="image_proc"
+          pkg="image_proc"
+          type="image_proc"
+          output="screen"/>
+
+    <!-- 机体到相机的静态 TF -->
+    <node name="base_link_to_usb_cam_link"
+          pkg="tf"
+          type="static_transform_publisher"
+          args="0 0 -0.05    <!-- xyz：相机在机体下方 5 cm -->
+                -1.57 0 -1.57  <!-- rpy：向下安装 -->
+                base_link
+                usb_cam_link
+                100"/>        <!-- 100 Hz -->
+
+    <!-- AprilTag 参数加载 -->
+    <rosparam command="load"
+              file="$(find apriltag_ros)/config/settings.yaml"/>
+    <rosparam command="load"
+              file="$(find apriltag_ros)/config/tags.yaml"/>
+
+    <!-- AprilTag 检测节点 -->
+    <node name="apriltag_ros_continuous_node"
+          pkg="apriltag_ros"
+          type="apriltag_ros_continuous_node"
+          clear_params="true"
+          output="screen">
+      <!-- 话题重映射：已经是 usb_cam 命名空间，直接写相对名字 -->
+      <remap from="image_rect"  to="image_raw"/>
+      <remap from="camera_info" to="camera_info"/>
+      <remap from="tag_detections" to="tag_detections"/>
+      <remap from="tag_detections_image" to="tag_detections_image"/>
+      <param name="camera_frame" value="usb_cam_link"/>
+      <param name="publish_tag_detections_image" value="true"/>
+    </node>
+
+  </group>
+</launch>
